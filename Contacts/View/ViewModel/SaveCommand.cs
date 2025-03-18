@@ -1,41 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using View.Model.Services;
+using System.Windows.Input;
 using View.Model;
+using View.Model.Services;
 
 namespace View.ViewModel
 {
-    public class SaveCommand
+    public class SaveCommand : ICommand
     {
-        private ContactSerializer _contactSerializer;
-        private Contact _contact;
-        //делегат для обновления данных
-        private Action _updateContact;
+        private readonly ContactSerializer _contactSerializer;
+        private readonly Contact _contact;
+        private readonly Action _updateContact;
 
         public SaveCommand(ContactSerializer contactSerializer, Contact contact, Action updateContact)
         {
-            _contactSerializer = contactSerializer ?? throw new ArgumentException(nameof(contactSerializer));
-            _contact = contact ?? throw new ArgumentException(nameof(contact));
-            _updateContact = updateContact ?? throw new ArgumentException(nameof(updateContact));
+            _contactSerializer = contactSerializer ?? throw new ArgumentNullException(nameof(contactSerializer));
+            _contact = contact ?? throw new ArgumentNullException(nameof(contact));
+            _updateContact = updateContact ?? throw new ArgumentNullException(nameof(updateContact));
         }
 
-        //Определяет можно ли выполнять программу (true по умолчанию)
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
+        public bool CanExecute(object parameter) => true;
 
-        //Событие изменения команды 
         public event EventHandler CanExecuteChanged;
 
-        //Метод для сохранения контакта 
-        public void Execute(object parametr)
+        public void Execute(object parameter)
         {
             _updateContact();
-            _contactSerializer.SaveToJson<Contact>(_contact);
+            _contactSerializer.SaveToJson(_contact);
         }
     }
 }

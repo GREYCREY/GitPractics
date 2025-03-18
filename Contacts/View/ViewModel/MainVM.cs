@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Windows.Input;
 using View.Model;
-
+using View.Model.Services;
 
 namespace View.ViewModel
 {
@@ -14,11 +10,14 @@ namespace View.ViewModel
         private string _name;
         private string _phoneNumber;
         private string _email;
+        private Contact _contact = new Contact();
+        private ContactSerializer _contactSerializer = new ContactSerializer();
+
         public event PropertyChangedEventHandler PropertyChanged;
-        Contact сontact = new Contact();
+
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (_name != value)
@@ -26,12 +25,12 @@ namespace View.ViewModel
                     _name = value;
                     OnPropertyChanged(nameof(Name));
                 }
-
             }
         }
+
         public string PhoneNumber
         {
-            get { return _phoneNumber; }
+            get => _phoneNumber;
             set
             {
                 if (_phoneNumber != value)
@@ -41,22 +40,55 @@ namespace View.ViewModel
                 }
             }
         }
-        public string Email 
+
+        public string Email
         {
-            get { return _email; }
+            get => _email;
             set
             {
-                if (value != _email)
+                if (_email != value)
                 {
                     _email = value;
                     OnPropertyChanged(nameof(Email));
                 }
             }
         }
+
+        public ICommand SaveCommand { get; }
+        public ICommand LoadCommand { get; }
+
+        public MainVM()
+        {
+            SaveCommand = new SaveCommand(_contactSerializer, _contact, UpdateContactFromProperties);
+            LoadCommand = new LoadCommand(_contactSerializer, SetContactFromLoadedData);
+        }
+
+        /// <summary>
+        /// Обновляет объект _contact из текущих данных ViewModel
+        /// </summary>
+        private void UpdateContactFromProperties()
+        {
+            _contact.Name = Name;
+            _contact.PhoneNumber = PhoneNumber;
+            _contact.Email = Email;
+        }
+
+        /// <summary>
+        /// Устанавливает данные в ViewModel из загруженного контакта
+        /// </summary>
+        private void SetContactFromLoadedData(Contact loadedContact)
+        {
+            if (loadedContact != null)
+            {
+                Name = loadedContact.Name;
+                PhoneNumber = loadedContact.PhoneNumber;
+                Email = loadedContact.Email;
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        
     }
 }
