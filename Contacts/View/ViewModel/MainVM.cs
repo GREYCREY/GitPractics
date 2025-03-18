@@ -5,6 +5,9 @@ using View.Model.Services;
 
 namespace View.ViewModel
 {
+    /// <summary>
+    /// Основная ViewModel для работы с данными контакта.
+    /// </summary>
     public class MainVM : INotifyPropertyChanged
     {
         private string _name;
@@ -13,8 +16,14 @@ namespace View.ViewModel
         private Contact _contact = new Contact();
         private ContactSerializer _contactSerializer = new ContactSerializer();
 
+        /// <summary>
+        /// Событие изменения свойств.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Получает или задаёт имя контакта.
+        /// </summary>
         public string Name
         {
             get => _name;
@@ -28,6 +37,9 @@ namespace View.ViewModel
             }
         }
 
+        /// <summary>
+        /// Получает или задаёт номер телефона контакта.
+        /// </summary>
         public string PhoneNumber
         {
             get => _phoneNumber;
@@ -41,6 +53,9 @@ namespace View.ViewModel
             }
         }
 
+        /// <summary>
+        /// Получает или задаёт электронную почту контакта.
+        /// </summary>
         public string Email
         {
             get => _email;
@@ -54,9 +69,19 @@ namespace View.ViewModel
             }
         }
 
+        /// <summary>
+        /// Команда для сохранения данных контакта.
+        /// </summary>
         public ICommand SaveCommand { get; }
+
+        /// <summary>
+        /// Команда для загрузки данных контакта.
+        /// </summary>
         public ICommand LoadCommand { get; }
 
+        /// <summary>
+        /// Инициализирует новый экземпляр <see cref="MainVM"/> и создаёт команды.
+        /// </summary>
         public MainVM()
         {
             SaveCommand = new SaveCommand(_contactSerializer, _contact, UpdateContactFromProperties);
@@ -64,7 +89,7 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// Обновляет объект _contact из текущих данных ViewModel
+        /// Обновляет объект _contact из текущих данных ViewModel.
         /// </summary>
         private void UpdateContactFromProperties()
         {
@@ -74,8 +99,9 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// Устанавливает данные в ViewModel из загруженного контакта
+        /// Устанавливает данные в ViewModel из загруженного контакта.
         /// </summary>
+        /// <param name="loadedContact">Загруженный контакт, содержащий данные для обновления ViewModel.</param>
         private void SetContactFromLoadedData(Contact loadedContact)
         {
             if (loadedContact != null)
@@ -86,6 +112,10 @@ namespace View.ViewModel
             }
         }
 
+        /// <summary>
+        /// Вспомогательный метод для вызова события изменения свойства.
+        /// </summary>
+        /// <param name="propertyName">Имя изменённого свойства.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

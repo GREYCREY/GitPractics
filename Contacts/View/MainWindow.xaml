@@ -35,10 +35,10 @@
                 <TextBlock Text="{Binding Name}" Margin="0,0,0,10"/>
 
                 <TextBlock Text="Phone Number:" FontWeight="Bold"/>
-                <TextBlock Text="{Binding PhoneNumber}" Foreground="Blue" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding PhoneNumber}" Margin="0,0,0,10"/>
 
                 <TextBlock Text="Email:" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Email}" Foreground="Blue"/>
+                <TextBlock Text="{Binding Email}"/>
             </StackPanel>
         </GroupBox>
 
