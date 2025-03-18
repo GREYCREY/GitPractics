@@ -10,9 +10,9 @@
         </Grid.ColumnDefinitions>
 
         <!-- Edit Contact Section -->
-        <GroupBox Header="Edit Contact" Margin="5,5,5,5">
+        <GroupBox Header="Edit Contact" Margin="5,3,5,7">
             <StackPanel Margin="10">
-                <TextBlock Text="Name:" Margin="0,0,0,5"/>
+                <TextBlock Text="Name:" Margin="0,0,0,3"/>
                 <TextBox Name="NameBox" Text="Смирнов Юрий" Margin="0,0,0,10"/>
 
                 <TextBlock Text="Phone Number:" Margin="0,0,0,5"/>
@@ -24,7 +24,7 @@
         </GroupBox>
 
         <!-- Read Contact Section -->
-        <GroupBox Header="Read Contact" Grid.Column="1" Margin="5,5,5,5" Grid.ColumnSpan="2">
+        <GroupBox Header="Read Contact" Grid.Column="1" Margin="3,3,3,3" Grid.ColumnSpan="2">
             <StackPanel Margin="10">
                 <TextBlock Text="Name:" FontWeight="Bold"/>
                 <TextBlock Text="Смирнов Юрий" Margin="0,0,0,10"/>
@@ -39,8 +39,8 @@
 
         <!-- Buttons -->
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1" Height="40" Width="200">
-            <Button Content="Save" Width="80" Margin="10" />
-            <Button Content="Load" Width="80" Margin="10"/>
+            <Button Content="Save" Width="75" Height="25" Margin="3" />
+            <Button Content="Load" Width="75" Height="25" Margin="3"/>
         </StackPanel>
     </Grid>
 </Window>
