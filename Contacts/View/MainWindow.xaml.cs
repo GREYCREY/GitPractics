@@ -20,7 +20,12 @@ namespace View
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainVM();
+            
+        }
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var mainVM = (MainVM)DataContext;
+            mainVM.DeselectContact();
         }
     }
 }

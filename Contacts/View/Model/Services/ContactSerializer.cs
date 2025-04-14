@@ -1,79 +1,85 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
-namespace View.Model.Services
+namespace View.Model.Servicies
 {
+    /// <summary>
+    /// Класс для сериализации и десериализации контактов.
+    /// </summary>
     public class ContactSerializer
     {
-        private string _filePath;
+         
 
-        public string FilePath
-        {
-            get => _filePath;
-            set => _filePath = value;
-        }
+        /// <summary>
+        /// Путь к файлу для сохранения и загрузки контактов.
+        /// </summary>
+        public string FilePath { get; set; }
 
+        
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="ContactSerializer"/>.
+        /// Устанавливает стандартный путь для сохранения файлов.
+        /// </summary>
         public ContactSerializer()
         {
-            // Получаем путь к папке "Документы" текущего пользователя
-            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string contactsFolder = Path.Combine(documentsPath, "Contacts");
+            FilePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Contacts",
+                "contacts.json"
+            );
 
-            // Создаем папку, если её нет
-            if (!Directory.Exists(contactsFolder))
-            {
-                Directory.CreateDirectory(contactsFolder);
-            }
-
-            // Формируем путь к JSON-файлу
-            _filePath = Path.Combine(contactsFolder, "contacts.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
         }
 
-        public void SaveToJson(Contact obj)
+        
+
+       
+
+        /// <summary>
+        /// Сохраняет контакты в файл в формате JSON.
+        /// </summary>
+        /// <param name="contacts">Список контактов для сохранения.</param>
+        public void SaveContacts(IEnumerable<Contact> contacts)
         {
             try
             {
-                if (obj == null)
-                {
-                    Console.WriteLine("Ошибка: передан null-объект.");
-                    return;
-                }
-
-                string json = JsonConvert.SerializeObject(obj, Formatting.Indented);
-
+                string json = JsonConvert.SerializeObject(contacts, Formatting.Indented);
                 File.WriteAllText(FilePath, json);
-
-                Console.WriteLine($" Объект успешно сохранён в файл: {FilePath}");
+                Console.WriteLine("Контакты успешно сохранены.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка при сохранении: {ex.Message}");
+                Console.WriteLine($"Ошибка при сохранении контактов: {ex.Message}");
             }
         }
 
-        public Contact LoadFromJson()
+        /// <summary>
+        /// Загружает контакты из файла.
+        /// </summary>
+        /// <returns>Список контактов.</returns>
+        public List<Contact> LoadContacts()
         {
             try
             {
                 if (!File.Exists(FilePath))
                 {
-                    Console.WriteLine(" Файл не найден.");
-                    return null;
+                    Console.WriteLine("Файл не найден.");
+                    return new List<Contact>();
                 }
 
                 string json = File.ReadAllText(FilePath);
-
-                Contact obj = JsonConvert.DeserializeObject<Contact>(json);
-
-                Console.WriteLine($" Объект успешно загружен из файла: {FilePath}");
-                return obj;
+                List<Contact> contacts = JsonConvert.DeserializeObject<List<Contact>>(json);
+                Console.WriteLine("Контакты успешно загружены.");
+                return contacts;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка при загрузке: {ex.Message}");
-                return null;
+                Console.WriteLine($"Ошибка при загрузке контактов: {ex.Message}");
+                return new List<Contact>();
             }
         }
+
+        
     }
 }
