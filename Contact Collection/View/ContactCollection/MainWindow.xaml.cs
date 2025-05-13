@@ -8,9 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using View.ViewModel;
+using ViewModel;
 
-namespace View
+namespace ContactCollection
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -20,12 +20,6 @@ namespace View
         public MainWindow()
         {
             InitializeComponent();
-            
-        }
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var mainVM = (MainVM)DataContext;
-            mainVM.DeselectContact();
         }
     }
 }
